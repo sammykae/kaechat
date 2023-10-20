@@ -47,7 +47,7 @@ const Login = () => {
       <form onSubmit={handleSubmit}>
         <div className="brand">
           <img src={logo} alt="kaechats" />
-          <h1>KAENOTE</h1>
+          <h1>KAECHAT</h1>
         </div>
 
         <input
