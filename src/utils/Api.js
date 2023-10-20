@@ -2,8 +2,8 @@ import axios from "axios";
 
 export default class Api {
   constructor() {
-    // this.base_url = process.env.REACT_APP_BASE_URL;
-    this.base_url = "http://localhost:5000";
+    this.base_url = process.env.REACT_APP_BASE_URL;
+    // this.base_url = "http://localhost:5000";
   }
 
   registerRoute(username, email, password) {
