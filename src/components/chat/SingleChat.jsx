@@ -81,9 +81,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       API.sendMessage(selectedChat, newMessage)
         .then((res) => {
           // emit message to server to send to other in chat
+          setNewMessage("");
           socket.emit("new message", res.data);
           setMessages([...messages, res.data]);
-          setNewMessage("");
         })
         .catch((err) => {
           toast({
@@ -102,9 +102,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         API.sendMessage(selectedChat, newMessage)
           .then((res) => {
             // emit message to server to send to other in chat
+            setNewMessage("");
             socket.emit("new message", res.data);
             setMessages([...messages, res.data]);
-            setNewMessage("");
           })
           .catch((err) => {
             toast({
