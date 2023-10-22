@@ -39,8 +39,9 @@ const Contacts = ({ fetchAgain }) => {
             status: "error",
             duration: 5000,
             isClosable: true,
-            position: "bottom-left",
+            position: "top-left",
           });
+          setChats([]);
         });
     };
     fetchChats();
@@ -88,6 +89,7 @@ const Contacts = ({ fetchAgain }) => {
         borderRadius="lg"
         overflowY="hidden"
       >
+        {chats?.length < 1 && <Text>No chat to display</Text>}
         {chats ? (
           <Stack overflow={"auto"} overflowY="auto">
             {chats.map((chat) => (
