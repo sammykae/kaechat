@@ -3,56 +3,144 @@ import axios from "axios";
 export default class Api {
   constructor() {
     this.base_url = process.env.REACT_APP_BASE_URL;
-    // this.base_url = "http://localhost:5000";
+
+    this.token = JSON.parse(localStorage?.getItem("user"))?.token;
   }
 
-  registerRoute(username, email, password) {
+  register(username, email, password, avatar) {
     return axios.post(`${this.base_url}/api/auth/register`, {
       username,
+      email,
+      password,
+      avatar,
+    });
+  }
+
+  login(email, password) {
+    return axios.post(`${this.base_url}/api/auth/login`, {
       email,
       password,
     });
   }
 
-  loginRoute(username, password) {
-    return axios.post(`${this.base_url}/api/auth/login`, {
-      username,
-      password,
+  searchChat(text) {
+    return axios.get(
+      `${this.base_url}/api/auth/getusers?search=${text}`,
+
+      {
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      }
+    );
+  }
+
+  accessChat(userId) {
+    return axios.post(
+      `${this.base_url}/api/chat`,
+      {
+        userId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      }
+    );
+  }
+
+  getChats() {
+    return axios.get(`${this.base_url}/api/chat`, {
+      headers: {
+        Authorization: `Bearer ${this.token}`,
+      },
     });
   }
 
-  getUserData(id) {
+  createGroupChat(name, users) {
+    return axios.post(
+      `${this.base_url}/api/chat/group`,
+      {
+        name,
+        users,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      }
+    );
+  }
+
+  getAllChat(id) {
     return axios.get(`${this.base_url}/api/auth/getalluser/${id}`);
   }
 
-  sendMessageRoute(from, to, message) {
-    return axios.post(`${this.base_url}/api/messages/addmsg`, {
-      from,
-      to,
-      message,
+  sendMessage(chatId, content) {
+    return axios.post(
+      `${this.base_url}/api/message`,
+      {
+        chatId,
+        content,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      }
+    );
+  }
+
+  getAllMessages(chatId) {
+    return axios.get(`${this.base_url}/api/message/${chatId}`, {
+      headers: {
+        Authorization: `Bearer ${this.token}`,
+      },
     });
   }
 
-  recieveMessageRoute(from, to) {
-    return axios.post(`${this.base_url}/api/messages/getmsg`, {
-      from,
-      to,
-    });
+  renameGroupChat(chatName, chatId) {
+    return axios.put(
+      `${this.base_url}/api/chat/group`,
+      {
+        chatName,
+        chatId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      }
+    );
   }
 
-  logoutRoute() {
-    return axios.post(`${this.base_url}/api/auth/logout`, {});
+  addUserToGroup(userId, chatId) {
+    return axios.put(
+      `${this.base_url}/api/chat/add`,
+      {
+        userId,
+        chatId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      }
+    );
   }
 
-  setAvatarRoute(id, image) {
-    return axios.post(`${this.base_url}/api/auth/setavatar/${id}`, {
-      image,
-    });
-  }
-
-  getRandomAvatar() {
-    return axios.get(
-      `https://api.multiavatar.com/${Math.round(Math.random() * 1000)}`
+  removeUserFromGroup(userId, chatId) {
+    return axios.put(
+      `${this.base_url}/api/chat/remove`,
+      {
+        userId,
+        chatId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      }
     );
   }
 }
